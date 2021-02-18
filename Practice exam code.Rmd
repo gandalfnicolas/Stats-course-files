@@ -1,0 +1,79 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk. 
+
+```{r}
+plot(cars)
+```
+
+You can add a new chunk by clicking the *Insert Chunk* button on the toolbar. But I created all the chunks you'll need.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it. 
+
+### Before starting EVERY ASSIGNMENT remember to:
+
+#### 1. Check your working directory. This is where your csv files that you may be reading should be AND this is where your assignment and other output will be saved!! If you need to change your working directory to your current project or to a specific folder, go to Session > Set working directory and choose a folder you know you can get access to and organize your files in.
+
+```{r}
+getwd()
+```
+
+#### 2. Install and Load important packages. You only need to install the package the first time, but you need to load them every time. For example, here we will be using the psych package. Let's install it and load it.Before the code within a chunk, starting with a # sign, I included comments on what the code is doing.
+
+```{r}
+#install (only need to run this chunk if you have not installed before)
+install.packages("psych", repos='http://cran.us.r-project.org')
+```
+
+```{r, warning = FALSE}
+#load
+library(psych) 
+```
+
+
+
+#### Load the dataset.  We will continue working with the dataset from our Assignments.
+
+```{r}
+data_Survey = read.csv("https://raw.githubusercontent.com/gandalfnicolas/Stats-course-files/main/Quant%20methods%20survey%20I.csv", sep = ",", header = TRUE, na.strings=c("","NA")) 
+```
+
+#### Open the dataset and examine the variables and their values.
+```{r}
+View(data_Survey)
+
+#NA values indicate missing data - either the respondent left the question unanswered, OR, for the LOTR variable, I recoded those who responded as "Never read/seen it" as missing data. I did this so that we retained only numerical values ranging from 1 - really dislike it to 5 - really like it. Alternatively, I could have coded "Never read/seen it" as a 3, since you would be probably be indifferent if you haven't read/seen the Lord of the Rings. But I decided to avoid making the assumption and simply coded as missing data. When analyzing your own data you need to make these kinds of decisions all the time! Just make sure you are transparent about it and provide a justification for your choice. 
+```
+
+#### Use the describe function to obtain more information. 
+```{r}
+#Notes about the table output from this code: 
+# sd stands for standard deviation. 
+# se stands for standad error.
+# You can click the right arrow (top right) for additional information for each variable.
+# Variables with a star* next to their name are qualitative - remember you should not interpret the mean, sd, median, etc. for qualitative variables.
+
+describe(data_Survey)
+```
+
+#### QUESTION 4
+
+#### The code below outputs the 50th percentile for the Tiktok variable. Change the '.50' value in the code so that you can obtain the percentiles needed to compute the Interquartile Range. If you accidentally delete code such that it gives you an error (and you can't undo), redownloa the file and try again!
+
+```{r}
+quantile(data_Survey$Tiktok, na.rm=T, .5)
+```
+
+#### QUESTION 5
+
+#### An imaginary census using these scales found that the average american had a score of 2.8 for Instagram use. The code below outputs the results for a two-tailed one sample t-test. We are testing whether Instagram usage, based on our data, is significantly different from 2.8.
+
+```{r}
+t.test(data_Survey$Instagram, mu = 2.8, alternative = "two.sided")
+```
+
