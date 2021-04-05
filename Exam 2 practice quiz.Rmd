@@ -1,0 +1,70 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#### Install and Load important packages. You only need to install the package the first time, but you need to load them every time. For example, here we will be using the psych package. Let's install it and load it.Before the code within a chunk, starting with a # sign, I included comments on what the code is doing.
+
+```{r}
+#install (only need to run this chunk if you have not installed before)
+install.packages("psych", repos='http://cran.us.r-project.org')
+```
+
+```{r, warning = FALSE}
+#load
+library(psych) 
+```
+
+
+#### Let's say that we are interested in testing if there are differences in how much people like Taylor Swift's music based on whether they are cat vs. dog people, psych vs. non-psych majors, and the interaction of these two variables. We will run a 2 x 2 Factorial ANOVA for this analysis.
+
+
+Run the code chunk below which will load our dataset
+```{r}
+Data_Anovaf_expq = read.csv("https://raw.githubusercontent.com/gandalfnicolas/Stats-course-files/main/Exam%202%20practice%20quiz.csv", sep = ",", header = TRUE, na.strings=c("","NA")) 
+```
+
+
+#### Open the dataset and examine the variables and their values.
+```{r}
+View(Data_Anovaf_expq)
+
+# Our dataset has the following variables:
+# ID for participant ID
+# Pet_type for whether the participant is a cat or a dog person
+# Major for whether the participant is a Psych or a Non-psych major
+# Taylor_preference for a score of how much the participant likes Taylor Swift's music (scale ranges from 1, not at all to 7, a lot)
+```
+
+
+
+#### Question 8. 
+
+Using R: Run the code below to obtain the pattern of means across the combination of conditions. Draw the figure using pen and paper and identify the figure that best illustrates the data pattern (in Canvas Question 8).
+```{r}
+Data_pattern = describeBy(Taylor_preference ~ Pet_type*Major, mat = T, data = Data_Anovaf_expq)
+print(Data_pattern)
+```
+
+
+
+#### Question 9.
+
+Using R: Run the code below to obtain the Factorial ANOVA results. Given these results, indicate which results are significant (in Canvas Question 9).
+
+```{r}
+fANOVA_results.pracqu = aov(Taylor_preference ~ Pet_type*Major, Data_Anovaf_expq)
+
+summary(fANOVA_results.pracqu)
+```
+
+
+
+#### Question 10.
+
+Using R: Run the code below to obtain the post-hoc test results. Given these results, indicate which of the following pairwise comparisons is NOT significant (in Canvas Question 10).
+
+```{r}
+TukeyHSD(fANOVA_results.pracqu)
+```
+
